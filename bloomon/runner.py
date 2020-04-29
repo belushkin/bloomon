@@ -1,20 +1,7 @@
-import sys
-
-
-
-
-
-
-
-
-
-
-
-
+from utils.stream import Stream
 
 stream = Stream()
-stream.read_stream()
+stream_gen = stream.read_stream()
 
-bucket_designs = []
-flowers = []
-
+for i in stream_gen:
+    print(i)
