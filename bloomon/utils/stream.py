@@ -1,12 +1,14 @@
 import sys
-from .bouqet_manager import BouqetManager
 
 
 class Stream(object):
 
-    def stream_reader(self):
+    def __init__(self, manager):
+        self.manager = manager
+
+    def streamReader(self):
         for line in sys.stdin:
             yield line
 
-    def read_stream(self):
-        return (BouqetManager(design) for design in self.stream_reader())
+    def readStream(self):
+        return (self.manager.manage(design) for design in self.streamReader())
