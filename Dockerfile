@@ -1,7 +1,6 @@
 FROM python:3.8-slim-buster
 
-RUN python -m pip install \
-        parse \
-        pytest \
-        isort
+COPY . /app
+WORKDIR /app
 
+RUN python -m pip install -r ./requirements.txt
