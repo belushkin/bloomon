@@ -38,10 +38,10 @@ def test_producing_bouqets(monkeypatch):
 
         # then
         if bouqet and bouqet[0] == 'AS':
-            assert bouqet[1] == 'AS3a4b6k2a5b'
+            assert bouqet[1] == 'AS5a9b6k'
             assert manager.getSmallFlowers() == {'a': 0, 't': 1, 'b': 5, 'k': 0}
 
         if bouqet and bouqet[0] == 'AL':
-            assert bouqet[1] == 'AL8d10r5t7d'
+            assert bouqet[1] == 'AL15d10r5t'
             assert manager.getLargeFlowers() == {'b': 1, 'r': 11, 'd': 0, 't': 0}
 

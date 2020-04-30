@@ -1,8 +1,15 @@
-from utils.stream import Stream
-from utils.bouqet_manager import BouqetManager
+import os
+import sys
 
-stream = Stream(BouqetManager())
-stream_gen = stream.read_stream()
+sys.path.append(os.getcwd())
 
-for i in stream_gen:
-    print(i)
+from bloomon.utils.bouqet_manager import BouqetManager
+from bloomon.utils.stream import Stream
+
+manager = BouqetManager()
+stream = Stream(manager)
+
+for _ in stream.readStream():
+    bouqet = manager.produceBouqet()
+    if bouqet:
+        print(bouqet[1])

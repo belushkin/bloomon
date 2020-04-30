@@ -1,11 +1,10 @@
 import re
-from bloomon.entities.flower import Flower
+
 from bloomon.entities.bouqet_design import BouqetDesign
 from collections import defaultdict
 
 
 class BouqetManager(object):
-
     EXCEPTION_MESSAGE = 'Booket design {} does not have quantity of flowers or it is less then 1'
 
     def __init__(self):
@@ -55,7 +54,7 @@ class BouqetManager(object):
         for i, val in enumerate(row):
             if not val.isdigit():
                 result[val] = int(row[j:i])
-                j = i+1
+                j = i + 1
         return result
 
     def _getTotalQuantityOfFlowers(self, row):
@@ -96,8 +95,9 @@ class BouqetManager(object):
             else:
                 # Building main bouqet name
                 name = design.getName() + design.getSize()
+                flowersName = defaultdict(int)
                 for key in designFlowers.keys():
-                    name += (str(designFlowers[key]) + key)
+                    flowersName[key] += designFlowers[key]
                     if design.getSize() == 'L':
                         self._flowersL[key] -= designFlowers[key]
                         self._totalFlowersL -= designFlowers[key]
@@ -116,12 +116,12 @@ class BouqetManager(object):
                         if reminder > 0 and self._flowersL[key] > 0:
 
                             if self._flowersL[key] >= reminder:
-                                name += (str(reminder) + key)
+                                flowersName[key] += reminder
                                 self._flowersL[key] -= reminder
                                 self._totalFlowersL -= reminder
                                 reminder = 0
                             else:
-                                name += (str(self._flowersL[key]) + key)
+                                flowersName[key] += self._flowersL[key]
                                 self._totalFlowersL -= self._flowersL[key]
                                 reminder -= self._flowersL[key]
                                 self._flowersL[key] = 0
@@ -131,17 +131,17 @@ class BouqetManager(object):
                         if reminder > 0 and self._flowersS[key] > 0:
 
                             if self._flowersS[key] >= reminder:
-                                name += (str(reminder) + key)
+                                flowersName[key] += reminder
                                 self._flowersS[key] -= reminder
                                 self._totalFlowersS -= reminder
                                 reminder = 0
                             else:
-                                name += (str(self._flowersS[key]) + key)
+                                flowersName[key] += self._flowersS[key]
                                 self._totalFlowersS -= self._flowersS[key]
                                 reminder -= self._flowersS[key]
                                 self._flowersS[key] = 0
 
-                return design.getName() + design.getSize(), name
+                retName = ''.join('{}{}'.format(value, key) for key, value in flowersName.items())
+                return design.getName() + design.getSize(), name + retName
 
         return None
-
