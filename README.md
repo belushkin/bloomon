@@ -17,6 +17,25 @@ container.
 ## Source code and execution result of the application
 ![](./assets/images/launch.png)
 
+
+## Ways to improve the applucation
+Application was designed under the pressure of time and can be optimized in different ways.
+First of all we have to decide do we consume all flowers and then produce bouqets or we produce bouqets
+on the fly.
+
+I don't see at the moment how we can optimize storage of the designs, we should walk over the list and check
+do we have enough flowers per every design. This is inefficient and can be optimized but I don't see clear
+solution at the moment. Probably we can store designs using TRIE datastructure or use another binary tree
+implementation
+
+Maintaining total amount of flowers both small and large can be improved either distinction between what
+kind of design do we have at the moment. Because current implementation produces huge if conditions and it
+looks ugly.
+
+Implementing reminder of the bouqet name must be improved as well. I think about maintaining priority queue
+with dictionary keys as flower specie and values as amount of left flowers large or small. Keeping it sorted
+will reduce amount of dict walking in order to fulfill left flowers in the bouqet.
+
 ## Technologies used in the assessment
 - Python 3.8
 - Docker
