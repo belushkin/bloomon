@@ -35,6 +35,8 @@ def test_producing_bouqets(monkeypatch):
     # when
     for _ in stream.readStream():
         bouqet = manager.produceBouqet()
+
+        # then
         if bouqet and bouqet[0] == 'AS':
             assert bouqet[1] == 'AS3a4b6k2a5b'
             assert manager.getSmallFlowers() == {'a': 0, 't': 1, 'b': 5, 'k': 0}
@@ -43,5 +45,3 @@ def test_producing_bouqets(monkeypatch):
             assert bouqet[1] == 'AL8d10r5t7d'
             assert manager.getLargeFlowers() == {'b': 1, 'r': 11, 'd': 0, 't': 0}
 
-    # then
-    assert True
