@@ -11,4 +11,4 @@ class Stream(object):
             yield line
 
     def readStream(self):
-        return (self.manager.manage(design) for design in self.streamReader())
+        return (self.manager.manage(design.strip()) for design in self.streamReader())
