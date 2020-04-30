@@ -5,6 +5,64 @@ from collections import defaultdict
 
 
 class BouqetManager(object):
+    """
+        A class used to operate input data from the input stream.
+        It takes input data and decide whether it is flower or design, then it stores it in internal storage
+        for flowers or create bouqet design objects for further bouqets producing. It also stores designs in a list
+
+        This class was designed under the pressure of time and can be optimized in different ways.
+        First of all we have to decide do we consume all flowers and then produce bouqets or we produce bouqets
+        on the fly.
+
+        I don't see at the moment how we can optimize storage of the designs, we should walk over the list and check
+        do we have enough flowers per every design. This is inefficient and can be optimized but I don't see clear
+        solution at the moment. Probably we can store designs using TRIE datastructure or use another binary tree
+        implementation
+
+        Maintaining total amount of flowers both small and large can be improved either distinction between what
+        kind of design do we have at the moment. Because current implementation produces huge if conditions and it
+        looks ugly.
+
+        Implementing reminder of the bouqet name must be improved as well. I think about maintaining priority queue
+        with dictionary keys as flower specie and values as amount of left flowers large or small. Keeping it sorted
+        will reduce amount of dict walking in order to fulfill left flowers in the bouqet.
+
+        Attributes
+        ----------
+        _designs : list
+            list of all designs we received from the input
+        _flowersS : dict
+            dictionary of small flower species together with amount we received from the input
+        _flowersL : dict
+            dictionary of large flower species together with amount we received from the input
+        _totalFlowersS : int
+            total amount of small flowers
+        _totalFlowersL : int
+            total amount of large flowers
+
+        Methods
+        -------
+        manage()
+            Consumes flower or design from the input and decide what to create flower or design
+        addBouqetDesign()
+            Creates object of bouqet design
+        addFlower()
+            Adds flower to the internal storage
+        getDesigns()
+            Returns existing designs
+        getSmallFlowers()
+            Returns dictionary with small flowers
+        getLargeFlowers()
+            Returns dictionary with large flowers
+        produceBouqet()
+            Check if we can create one of existing designs from the stream of incoming flowers.
+            Most time consuming and core function of the assessment
+        _getFlowers()
+            Private helper function for cutting flowers from the input string
+        _getTotalQuantityOfFlowers()
+            Private helper function for cutting total quantity of flowers from the input string
+    """
+
     EXCEPTION_MESSAGE = 'Booket design {} does not have quantity of flowers or it is less then 1'
 
     def __init__(self):
@@ -17,11 +75,19 @@ class BouqetManager(object):
         self._totalFlowersL = 0
 
     def manage(self, line):
+        """ void function consumes flower or design from the input and decide what to create flower or design
+
+        :return: void
+        """
         if not line:
             return None
         self.addFlower(line) if re.match('[a-z][L|S]', line) else self.addBouqetDesign(line)
 
     def addBouqetDesign(self, line):
+        """ Creates new Bouqet design and store it in the list
+
+        :return: void
+        """
         quantity = self._getTotalQuantityOfFlowers(line)
         design = BouqetDesign(
             line[0],
@@ -32,6 +98,11 @@ class BouqetManager(object):
         self._designs.append(design)
 
     def addFlower(self, line):
+        """ Adds flower to the internal storage and increase total amount of flowers
+            needed for checking if we can create bouqet or not
+
+        :return: void
+        """
         if line[1] == 'L':
             self._flowersL[line[0]] += 1
             self._totalFlowersL += 1
@@ -40,15 +111,35 @@ class BouqetManager(object):
             self._totalFlowersS += 1
 
     def getDesigns(self):
+        """ Returns existing designs
+
+        :return: list of existing designs
+        :rtype: list
+        """
         return self._designs
 
     def getSmallFlowers(self):
+        """ Returns dictionary with small flowers
+
+        :return: small flowers
+        :rtype: dict
+        """
         return self._flowersS
 
     def getLargeFlowers(self):
+        """ void function consumes flower or design from the input and decide what to create flower or design
+
+        :return: large flowers
+        :rtype: dict
+        """
         return self._flowersL
 
     def _getFlowers(self, row):
+        """ Walk over the input string and cut flower specie and quantity then return it in dict
+
+        :return: flowers species and quantities
+        :rtype: dict
+        """
         result = {}
         j = 0
         for i, val in enumerate(row):
@@ -58,6 +149,13 @@ class BouqetManager(object):
         return result
 
     def _getTotalQuantityOfFlowers(self, row):
+        """ Cut total amount of flowers from the tail of the string
+
+        :raises: RuntimeError(EXCEPTION_MESSAGE)
+            If quantity of flowers is 0 or does not exists at all
+        :return: quantity of flowers
+        :rtype: int
+        """
         quantity = 0
 
         if not row[-1].isdigit():
@@ -74,9 +172,12 @@ class BouqetManager(object):
         return quantity
 
     def produceBouqet(self):
-        """
+        """ Produce bouqet from existing flowers, checks if it has enough flowers to do it.
+            Walking over designs and checking can have bugs which has not been covered by tests, be careful
+            If you find issue please cover it by tests
 
-        :return:
+        :return: bouqet name
+        :rtype: str
         """
         for design in self._designs:
 

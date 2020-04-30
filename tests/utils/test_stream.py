@@ -18,8 +18,8 @@ def test_read_stream(monkeypatch):
 
     # then
     assert len(manager.getDesigns()) == 2
-    assert len(manager.getLargeFlowers()) == 2
-    assert len(manager.getSmallFlowers()) == 2
+    assert len(manager.getLargeFlowers()) == 4
+    assert len(manager.getSmallFlowers()) == 4
 
 
 def test_producing_bouqets(monkeypatch):
