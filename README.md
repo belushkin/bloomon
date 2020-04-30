@@ -18,7 +18,7 @@ container.
 ![](./assets/images/launch.png)
 
 
-## Ways to improve the applucation
+## Ways to improve the application
 Application was designed under the pressure of time and can be optimized in different ways.
 First of all we have to decide do we consume all flowers and then produce bouqets or we produce bouqets
 on the fly.
